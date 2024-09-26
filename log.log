@@ -1,0 +1,2 @@
+time=2024-09-26T21:07:05.667+03:00 level=INFO source=/Users/admin/golang_projects/no_projects/TestEffectiveMobile/cmd/main.go:28 msg="Server up with address: localhost:8080"
+time=2024-09-26T21:07:32.311+03:00 level=INFO source=/Users/admin/golang_projects/no_projects/TestEffectiveMobile/internal/handlers/handler.go:10 msg=cheak

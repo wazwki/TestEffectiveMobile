@@ -1,4 +1,4 @@
--- 202409261636_create_songs_table.sql
+-- 000001_create_songs_table.up.sql
 CREATE TABLE IF NOT EXISTS songs (
   id SERIAL PRIMARY KEY,
   group_name VARCHAR(255) NOT NULL,

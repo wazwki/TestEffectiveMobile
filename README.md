@@ -9,15 +9,16 @@
 - Изменение данных песни
 - Добавление новой песни в формате JSON
 
+```json
 {
  "group": "Muse",
  "song": "Supermassive Black Hole"
 }
-
+```
 
 ### 2. При Create запросе к создаваемому сервису - сделать запрос во внешний API, описанный Swagger'ом:
 
-```json
+```yaml
 openapi: 3.0.3
 info:
   title: Music info
@@ -75,22 +76,16 @@ components:
 
 ### 6. Сгенерировать swagger на реализованное API
 
----
 
-https://pkg.go.dev/userclouds.com/infra/pagination
-
-swaggo
-
-pgx
-
-log/slog
-
-godotenv
-
----
-
+```markdown
+TestEffectiveMobile
+│
 ├── cmd
 │   └── main.go          # Точка входа в приложение
+├── db
+│   ├── migrations       # SQL миграции для создания таблиц
+│   └── db.go            # Инициализация подключения к базе данных
+├── docs                 # Swagger-документация
 ├── internal
 │   ├── handlers
 │   │   └── handler.go   # REST-хэндлеры
@@ -98,14 +93,13 @@ godotenv
 │   │   └── service.go   # Бизнес-логика
 │   └── repository
 │       └── repo.go      # Работа с базой данных (PostgreSQL)
-├── db
-│   ├── migrations       # SQL миграции для создания таблиц
-│   └── db.go            # Инициализация подключения к базе данных
+├── pkg
+│   └── logger
+│       └── logger.go    # Логгирование
 ├── .env                 # Конфигурационный файл
 ├── .gitignore
 ├── go.mod
 ├── go.sum
-├── docs                 # Swagger-документация
+├── log.log              # Логи
 └── README.md
-
----
+```

@@ -1,21 +1,28 @@
 package repository
 
-func GetSong() {
+import "musiclibrary/internal/models"
+
+func GetSong() ([]models.Song, error) {
 	//
+	return []models.Song{}, nil
 }
 
-func GetDetailSong() {
+func GetDetailSong(id int) (models.Song, error) {
 	//
+	return models.Song{}, nil
 }
 
-func PostSong() {
+func PostSong(s models.Song) error {
 	//
+	return nil
 }
 
-func UpdateSong() {
+func UpdateSong(id int) error {
 	//
+	return nil
 }
 
-func DeleteSong() {
+func DeleteSong(id int) error {
 	//
+	return nil
 }
