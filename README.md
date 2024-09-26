@@ -88,3 +88,24 @@ log/slog
 godotenv
 
 ---
+
+├── cmd
+│   └── main.go          # Точка входа в приложение
+├── internal
+│   ├── handlers
+│   │   └── handler.go   # REST-хэндлеры
+│   ├── service
+│   │   └── service.go   # Бизнес-логика
+│   └── repository
+│       └── repo.go      # Работа с базой данных (PostgreSQL)
+├── db
+│   ├── migrations       # SQL миграции для создания таблиц
+│   └── db.go            # Инициализация подключения к базе данных
+├── .env                 # Конфигурационный файл
+├── .gitignore
+├── go.mod
+├── go.sum
+├── docs                 # Swagger-документация
+└── README.md
+
+---
