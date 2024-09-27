@@ -7,6 +7,8 @@ import (
 	"musiclibrary/internal/repository"
 	"musiclibrary/internal/service"
 	"net/http"
+	"strconv"
+	"strings"
 )
 
 // GetSongHandler godoc
@@ -14,11 +16,35 @@ import (
 // @Description Get a list of all songs with optional filtering and pagination
 // @Tags songs
 // @Produce json
-// @Success 200 {array} Song
-// @Failure 500 {object} ErrorResponse
+// @Param group query string false "Filter by group name"
+// @Param song query string false "Filter by song name"
+// @Param release_date query string false "Filter by release_date"
+// @Param text query string false "Filter by song text"
+// @Param limit query int false "Limit the number of results (default is 10)"
+// @Param offset query int false "Offset the results for pagination (default is 0)"
+// @Success 200 {array}	models.Song
+// @Failure 500 {string} string "Status Internal Server Error 500"
 // @Router /songs [get]
 func GetSongHandler(w http.ResponseWriter, r *http.Request) {
-	songs, err := repository.GetSong()
+	group := r.URL.Query().Get("group")
+	song := r.URL.Query().Get("song")
+	release_date := r.URL.Query().Get("release_date")
+	text := r.URL.Query().Get("text")
+
+	limitStr := r.URL.Query().Get("limit")
+	offsetStr := r.URL.Query().Get("offset")
+
+	limit, err := strconv.Atoi(limitStr)
+	if err != nil || limit <= 0 {
+		limit = 10
+	}
+
+	offset, err := strconv.Atoi(offsetStr)
+	if err != nil || offset < 0 {
+		offset = 0
+	}
+
+	songs, err := repository.GetSong(group, song, release_date, text, limit, offset)
 	if err != nil {
 		slog.Error(err.Error())
 		w.WriteHeader(http.StatusInternalServerError)
@@ -35,23 +61,41 @@ func GetSongHandler(w http.ResponseWriter, r *http.Request) {
 // @Description Get detailed information about a song by its ID
 // @Tags songs
 // @Produce json
+// @Param page query int true "Pagination"
 // @Param id path int true "Song ID"
-// @Success 200 {object} Song
-// @Failure 400 {object} ErrorResponse
-// @Failure 500 {object} ErrorResponse
+// @Success 200 {object} models.Song
+// @Failure 400 {string} string "Status Bad Request 400"
+// @Failure 500 {string} string "Status Internal Server Error 500"
 // @Router /songs/{id} [get]
 func GetDetailSongHandler(w http.ResponseWriter, r *http.Request) {
 	id := r.PathValue("id")
+
+	pageStr := r.URL.Query().Get("page")
+
+	page, err := strconv.Atoi(pageStr)
+	if err != nil || page <= 0 {
+		page = 1
+	}
+
 	var song *models.Song
 
-	song, err := repository.GetDetailSong(id)
+	song, err = repository.GetDetailSong(id)
 	if err != nil {
 		slog.Error(err.Error())
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
 
-	if err = json.NewEncoder(w).Encode(&song); err != nil {
+	songObj := *song
+	textsong := strings.Split(songObj.Text, "\n\n")
+
+	if page <= len(textsong) {
+		songObj.Text = textsong[page-1]
+	} else {
+		songObj.Text = textsong[len(textsong)-1]
+	}
+
+	if err = json.NewEncoder(w).Encode(songObj); err != nil {
 		slog.Error(err.Error())
 		w.WriteHeader(http.StatusInternalServerError)
 		return
@@ -68,9 +112,9 @@ func GetDetailSongHandler(w http.ResponseWriter, r *http.Request) {
 // @Accept json
 // @Produce json
 // @Param song body Song true "Add song"
-// @Success 201 {object} Song
-// @Failure 400 {object} ErrorResponse
-// @Failure 500 {object} ErrorResponse
+// @Success 201 {object} models.Song
+// @Failure 400 {string} string "Status Bad Request 400"
+// @Failure 500 {string} string "Status Internal Server Error 500"
 // @Router /songs [post]
 func PostSongHandler(w http.ResponseWriter, r *http.Request) {
 	var song models.Song
@@ -106,9 +150,9 @@ func PostSongHandler(w http.ResponseWriter, r *http.Request) {
 // @Produce json
 // @Param id path int true "Song ID"
 // @Param song body Song true "Update song"
-// @Success 200 {object} Song
-// @Failure 400 {object} ErrorResponse
-// @Failure 500 {object} ErrorResponse
+// @Success 200 {object} models.Song
+// @Failure 400 {string} string "Status Bad Request 400"
+// @Failure 500 {string} string "Status Internal Server Error 500"
 // @Router /songs/{id} [put]
 func UpdateSongHandler(w http.ResponseWriter, r *http.Request) {
 	id := r.PathValue("id")
@@ -137,8 +181,8 @@ func UpdateSongHandler(w http.ResponseWriter, r *http.Request) {
 // @Produce json
 // @Param id path int true "Song ID"
 // @Success 204
-// @Failure 400 {object} ErrorResponse
-// @Failure 500 {object} ErrorResponse
+// @Failure 400 {string} string "Status Bad Request 400"
+// @Failure 500 {string} string "Status Internal Server Error 500"
 // @Router /songs/{id} [delete]
 func DeleteSongHandler(w http.ResponseWriter, r *http.Request) {
 	id := r.PathValue("id")

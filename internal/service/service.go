@@ -11,7 +11,7 @@ import (
 func GetSongDetailFromOtherAPI(song models.Song) (*models.Song, error) {
 	var Details models.SongDetail
 	api_url := os.Getenv("API_URL")
-	response, err := http.Get(fmt.Sprintf("%v?group=%v&song=%v", api_url, song.GroupName, song.SongName))
+	response, err := http.Get(fmt.Sprintf("%v/info?group=%v&song=%v", api_url, song.GroupName, song.SongName))
 	if err != nil {
 		return nil, err
 	}

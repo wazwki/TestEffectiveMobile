@@ -29,7 +29,7 @@ func DBInit() {
 	if err != nil {
 		slog.Error(err.Error())
 	}
-	slog.Info("Успешное подключение к базе данных")
+	slog.Info("Sucsess connection to database")
 
 	driver, err := postgres.WithInstance(DB, &postgres.Config{})
 	if err != nil {
@@ -47,6 +47,5 @@ func DBInit() {
 	if err != nil && err != migrate.ErrNoChange {
 		slog.Error(err.Error())
 	}
-	slog.Info("Миграции успешно применены")
-
+	slog.Info("Migrations apply")
 }

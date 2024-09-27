@@ -1,3 +1,9 @@
+// @title Online Music Library API
+// @version 1.0
+// @description This is an API for managing a music library with CRUD operations and external API integration
+// @host localhost:8080
+// @BasePath /
+
 package main
 
 import (
@@ -13,12 +19,6 @@ import (
 
 	"github.com/joho/godotenv"
 )
-
-// @title Online Music Library API
-// @version 1.0
-// @description This is an API for managing a music library with CRUD operations and external API integration
-// @host localhost:8080
-// @BasePath /
 
 func main() {
 	logger.LogInit()

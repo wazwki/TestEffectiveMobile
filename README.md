@@ -1,4 +1,4 @@
-## Реализация онлайн библиотеки песен
+## ТЗ: "Реализация онлайн библиотеки песен"
 
 ### Необходимо реализовать следующее:
 
@@ -62,22 +62,29 @@ components:
           example: 16.07.2006
         text:
           type: string
-          example: Ooh baby, don't you know I suffer?
-        patronymic:
+          example: Ooh baby, don't you know I suffer?\nOoh baby, can you hear me moan?\nYou caught me under false pretenses\nHow long before you let me go?\n\nOoh\nYou set my soul alight\nOoh\nYou set my soul alight
+        link:
           type: string
           example: https://www.youtube.com/watch?v=Xsp3_a-PMTw
+
 ```
 
-### 3. Обогащенную информацию положить в БД postgres (структура БД должна быть создана путем миграций при старте сервиса)
+### 3. Обогащенную информацию положить в БД postgres (структура БД должна быть создана путем миграций при старте сервиса).
 
-### 4. Покрыть код debug- и info-логами
+### 4. Покрыть код debug- и info-логами.
 
-### 5. Вынести конфигурационные данные в .env-файл
+### 5. Вынести конфигурационные данные в .env-файл.
 
-### 6. Сгенерировать swagger на реализованное API
+### 6. Сгенерировать swagger на реализованное API.
 
+--- 
+
+## Реализация:
+
+### Структура проекта:
 
 ```markdown
+
 TestEffectiveMobile
 │
 ├── cmd
@@ -96,10 +103,23 @@ TestEffectiveMobile
 ├── pkg
 │   └── logger
 │       └── logger.go    # Логгирование
+├── .dockerfile
 ├── .env                 # Конфигурационный файл
 ├── .gitignore
+├── docker-compose.yml
 ├── go.mod
 ├── go.sum
 ├── log.log              # Логи
 └── README.md
+
+```
+
+### Использование:
+
+#### Для запуска проекта выполните команду:
+
+```bash
+
+docker-compose up
+
 ```

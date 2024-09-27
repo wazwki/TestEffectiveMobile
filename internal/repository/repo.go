@@ -3,21 +3,56 @@ package repository
 import (
 	"musiclibrary/db"
 	"musiclibrary/internal/models"
+	"strconv"
+	"strings"
 )
 
-func GetSong() ([]models.Song, error) {
+func GetSong(group, song, release_date, text string, limit, offset int) ([]models.Song, error) {
 	songs := []models.Song{}
 
-	rows, err := db.DB.Query(`SELECT id, group_name, song_name, release_date, text, link FROM songs`)
+	query := `SELECT id, group_name, song_name, release_date, text, link FROM songs WHERE 1=1`
+	var args []interface{}
+	var conditions []string
+
+	if group != "" {
+		conditions = append(conditions, "group_name ILIKE $"+strconv.Itoa(len(args)+1))
+		args = append(args, "%"+group+"%")
+	}
+
+	if song != "" {
+		conditions = append(conditions, "song_name ILIKE $"+strconv.Itoa(len(args)+1))
+		args = append(args, "%"+song+"%")
+	}
+
+	if release_date != "" {
+		conditions = append(conditions, "release_date = $"+strconv.Itoa(len(args)+1))
+		args = append(args, release_date)
+	}
+
+	if text != "" {
+		conditions = append(conditions, "text ILIKE $"+strconv.Itoa(len(args)+1))
+		args = append(args, "%"+text+"%")
+	}
+
+	if len(conditions) > 0 {
+		query += " AND " + strings.Join(conditions, " AND ")
+	}
+
+	query += " LIMIT $" + strconv.Itoa(len(args)+1)
+	args = append(args, limit)
+
+	query += " OFFSET $" + strconv.Itoa(len(args)+1)
+	args = append(args, offset)
+
+	rows, err := db.DB.Query(query, args...)
 	if err != nil {
 		return nil, err
 	}
-
 	defer rows.Close()
 
 	for rows.Next() {
 		s := models.Song{}
-		err = rows.Scan(&s.ID, &s.GroupName, &s.SongName, &s.ReleaseDate, &s.ReleaseDate, &s.Text, &s.Link)
+		err = rows.Scan(&s.ID, &s.GroupName, &s.SongName, &s.ReleaseDate, &s.Text, &s.Link)
 		if err != nil {
 			return nil, err
 		}
