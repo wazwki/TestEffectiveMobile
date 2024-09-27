@@ -91,11 +91,23 @@ TestEffectiveMobile
 │   └── main.go          # Точка входа в приложение
 ├── db
 │   ├── migrations       # SQL миграции для создания таблиц
+│   │   ├── 000001_create_songs_table.up.sql
+│   │   └── 000001_create_songs_table.down.sql
 │   └── db.go            # Инициализация подключения к базе данных
 ├── docs                 # Swagger-документация
+│   ├── docs.go
+│   ├── index.html
+│   ├── swagger-initializer.js
+│   ├── swagger-ui-bundle.js
+│   ├── swagger-ui-standalone-preset.js
+│   ├── swagger-ui.css
+│   ├── swagger.json
+│   └── swagger.yaml
 ├── internal
 │   ├── handlers
 │   │   └── handler.go   # REST-хэндлеры
+│   ├── models
+│   │   └── models.go    # Структуры данных
 │   ├── service
 │   │   └── service.go   # Бизнес-логика
 │   └── repository
