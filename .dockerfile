@@ -8,7 +8,7 @@ RUN go mod download
 
 COPY . .
 
-RUN go build -o main cmd/main.go
+RUN CGO_ENABLED=0 go build -o main cmd/main.go
 
 FROM alpine:3.18
 

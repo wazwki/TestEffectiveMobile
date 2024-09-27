@@ -15,37 +15,38 @@ import (
 
 var DB *sql.DB
 
-func DBInit() {
+func DBInit() error {
 	psqlInfo := fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=disable",
 		os.Getenv("DB_HOST"), os.Getenv("DB_PORT"), os.Getenv("DB_USER"), os.Getenv("DB_PASSWORD"), os.Getenv("DB_NAME"))
 
-	DB, err := sql.Open("postgres", psqlInfo)
+	var err error
+	DB, err = sql.Open("postgres", psqlInfo)
 	if err != nil {
-		slog.Error(err.Error())
+		return err
 	}
-	defer DB.Close()
 
 	err = DB.Ping()
 	if err != nil {
-		slog.Error(err.Error())
+		return err
 	}
-	slog.Info("Sucsess connection to database")
+	slog.Info("Success connection to database")
 
 	driver, err := postgres.WithInstance(DB, &postgres.Config{})
 	if err != nil {
-		slog.Error(err.Error())
+		return err
 	}
 
 	m, err := migrate.NewWithDatabaseInstance(
 		"file://db/migrations",
 		"postgres", driver)
 	if err != nil {
-		slog.Error(err.Error())
+		return err
 	}
 
 	err = m.Up()
 	if err != nil && err != migrate.ErrNoChange {
-		slog.Error(err.Error())
+		return err
 	}
-	slog.Info("Migrations apply")
+	slog.Info("Migrations applied successfully")
+	return nil
 }

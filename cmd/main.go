@@ -23,10 +23,15 @@ import (
 func main() {
 	logger.LogInit()
 	slog.SetDefault(logger.Logger)
-	db.DBInit()
 
 	if err := godotenv.Load(); err != nil {
 		slog.Error(err.Error())
+		os.Exit(1)
+	}
+
+	if err := db.DBInit(); err != nil {
+		slog.Error(err.Error())
+		os.Exit(1)
 	}
 
 	host := os.Getenv("HOST")

@@ -95,14 +95,13 @@ func GetDetailSongHandler(w http.ResponseWriter, r *http.Request) {
 		songObj.Text = textsong[len(textsong)-1]
 	}
 
-	if err = json.NewEncoder(w).Encode(songObj); err != nil {
+	if err = json.NewEncoder(w).Encode(&songObj); err != nil {
 		slog.Error(err.Error())
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
 
 	w.Header().Set("Content-Type", "application/json")
-	w.WriteHeader(http.StatusOK)
 }
 
 // PostSongHandler godoc
