@@ -112,6 +112,8 @@ TestEffectiveMobile
 │   │   └── service.go   # Бизнес-логика
 │   └── repository
 │       └── repo.go      # Работа с базой данных (PostgreSQL)
+├── mock_api
+│   └── server.go        # Mock api для запросов
 ├── pkg
 │   └── logger
 │       └── logger.go    # Логгирование

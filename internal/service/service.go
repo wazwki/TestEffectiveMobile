@@ -11,12 +11,13 @@ import (
 
 func GetSongDetailFromOtherAPI(song models.Song) (*models.Song, error) {
 	var Details models.SongDetail
-	apiURL := os.Getenv("API_URL")
+	host := os.Getenv("API_URL")
+	port := os.Getenv("API_PORT")
 
 	group := url.QueryEscape(song.GroupName)
 	songName := url.QueryEscape(song.SongName)
 
-	requestURL := fmt.Sprintf("%v/info?group=%v&song=%v", apiURL, group, songName)
+	requestURL := fmt.Sprintf("%v:%v/info?group=%v&song=%v", host, port, group, songName)
 
 	response, err := http.Get(requestURL)
 	if err != nil {

@@ -9,13 +9,18 @@ package main
 import (
 	"TestEffectiveMobile/db"
 	"TestEffectiveMobile/internal/handlers"
+	"TestEffectiveMobile/mock_api"
 	"TestEffectiveMobile/pkg/logger"
+	"context"
 	"fmt"
 	"log/slog"
 	"net/http"
 	"os"
+	"os/signal"
 	"path/filepath"
 	"strings"
+	"syscall"
+	"time"
 
 	"github.com/joho/godotenv"
 )
@@ -42,9 +47,16 @@ func main() {
 	if port == "" {
 		port = "8080"
 	}
-	slog.Info(fmt.Sprintf("Server up with address: %v:%v", host, port))
 
 	mux := http.DefaultServeMux
+
+	srv := &http.Server{
+		Addr:    fmt.Sprintf("%v:%v", host, port),
+		Handler: mux,
+	}
+
+	quit := make(chan os.Signal, 1)
+	signal.Notify(quit, syscall.SIGTERM, syscall.SIGINT)
 
 	mux.HandleFunc("GET /songs", handlers.GetSongHandler)
 	mux.HandleFunc("GET /songs/{id}", handlers.GetDetailSongHandler)
@@ -54,8 +66,29 @@ func main() {
 
 	mux.HandleFunc("/swagger/", serveSwagger)
 
-	if err := http.ListenAndServe(host+":"+port, mux); err != nil {
+	go func() {
+		slog.Info(fmt.Sprintf("Server up with address: %v:%v", host, port))
+		if err := srv.ListenAndServe(); err != nil && err != http.ErrServerClosed {
+			slog.Error(err.Error())
+		}
+	}()
+
+	go func() {
+		if err := mock_api.MockApiInit(); err != nil {
+			slog.Error(err.Error())
+		}
+	}()
+
+	<-quit
+	slog.Info("Shutting down server...")
+
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+
+	if err := srv.Shutdown(ctx); err != nil {
 		slog.Error(err.Error())
+	} else {
+		slog.Info("Server gracefully stopped")
 	}
 }
 
