@@ -7,11 +7,11 @@
 package main
 
 import (
+	"TestEffectiveMobile/db"
+	"TestEffectiveMobile/internal/handlers"
+	"TestEffectiveMobile/pkg/logger"
 	"fmt"
 	"log/slog"
-	"musiclibrary/db"
-	"musiclibrary/internal/handlers"
-	"musiclibrary/pkg/logger"
 	"net/http"
 	"os"
 	"path/filepath"

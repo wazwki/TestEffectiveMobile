@@ -1,11 +1,11 @@
 package handlers
 
 import (
+	"TestEffectiveMobile/internal/models"
+	"TestEffectiveMobile/internal/repository"
+	"TestEffectiveMobile/internal/service"
 	"encoding/json"
 	"log/slog"
-	"musiclibrary/internal/models"
-	"musiclibrary/internal/repository"
-	"musiclibrary/internal/service"
 	"net/http"
 	"strconv"
 	"strings"

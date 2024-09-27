@@ -1,4 +1,4 @@
-module musiclibrary
+module TestEffectiveMobile
 
 go 1.22.3
 

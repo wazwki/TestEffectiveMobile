@@ -1,8 +1,8 @@
 package repository
 
 import (
-	"musiclibrary/db"
-	"musiclibrary/internal/models"
+	"TestEffectiveMobile/db"
+	"TestEffectiveMobile/internal/models"
 	"strconv"
 	"strings"
 )

@@ -1,9 +1,9 @@
 package service
 
 import (
+	"TestEffectiveMobile/internal/models"
 	"encoding/json"
 	"fmt"
-	"musiclibrary/internal/models"
 	"net/http"
 	"os"
 )
