@@ -18,10 +18,16 @@ import (
 // @Failure 500 {object} ErrorResponse
 // @Router /songs [get]
 func GetSongHandler(w http.ResponseWriter, r *http.Request) {
+	songs, err := repository.GetSong()
+	if err != nil {
+		slog.Error(err.Error())
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
 
-	//вывод всей библиотеки(только поля group и song) с пагинацией и фильтрами
 	w.Header().Set("Content-Type", "application/json")
-
+	w.WriteHeader(http.StatusOK)
+	json.NewEncoder(w).Encode(songs)
 }
 
 // GetDetailSongHandler godoc
@@ -35,9 +41,24 @@ func GetSongHandler(w http.ResponseWriter, r *http.Request) {
 // @Failure 500 {object} ErrorResponse
 // @Router /songs/{id} [get]
 func GetDetailSongHandler(w http.ResponseWriter, r *http.Request) {
+	id := r.PathValue("id")
+	var song *models.Song
 
-	//вывод всех полей конкретного объекта
+	song, err := repository.GetDetailSong(id)
+	if err != nil {
+		slog.Error(err.Error())
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+
+	if err = json.NewEncoder(w).Encode(&song); err != nil {
+		slog.Error(err.Error())
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+
 	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
 }
 
 // PostSongHandler godoc
@@ -90,8 +111,23 @@ func PostSongHandler(w http.ResponseWriter, r *http.Request) {
 // @Failure 500 {object} ErrorResponse
 // @Router /songs/{id} [put]
 func UpdateSongHandler(w http.ResponseWriter, r *http.Request) {
+	id := r.PathValue("id")
+	var song models.Song
 
-	//обновление объекта по id
+	if err := json.NewDecoder(r.Body).Decode(&song); err != nil {
+		slog.Error(err.Error())
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+
+	err := repository.UpdateSong(id, song)
+	if err != nil {
+		slog.Error(err.Error())
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+
+	w.WriteHeader(http.StatusOK)
 }
 
 // DeleteSongHandler godoc
@@ -105,6 +141,14 @@ func UpdateSongHandler(w http.ResponseWriter, r *http.Request) {
 // @Failure 500 {object} ErrorResponse
 // @Router /songs/{id} [delete]
 func DeleteSongHandler(w http.ResponseWriter, r *http.Request) {
+	id := r.PathValue("id")
 
-	//удаление объекта по id
+	err := repository.DeleteSong(id)
+	if err != nil {
+		slog.Error(err.Error())
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+
+	w.WriteHeader(http.StatusNoContent)
 }
