@@ -1,0 +1,204 @@
+basePath: /
+definitions:
+  TestEffectiveMobile_internal_models.Song:
+    properties:
+      group:
+        type: string
+      id:
+        type: integer
+      link:
+        type: string
+      releaseDate:
+        type: string
+      song:
+        type: string
+      text:
+        type: string
+    type: object
+  internal_handlers.Song:
+    properties:
+      group:
+        type: string
+      id:
+        type: integer
+      link:
+        type: string
+      releaseDate:
+        type: string
+      song:
+        type: string
+      text:
+        type: string
+    type: object
+host: localhost:8080
+info:
+  contact: {}
+  description: This is an API for managing a music library with CRUD operations and
+    external API integration
+  title: Online Music Library API
+  version: "1.0"
+paths:
+  /songs:
+    get:
+      description: Get a list of all songs with optional filtering and pagination
+      parameters:
+      - description: Filter by group name
+        in: query
+        name: group
+        type: string
+      - description: Filter by song name
+        in: query
+        name: song
+        type: string
+      - description: Filter by release_date
+        in: query
+        name: release_date
+        type: string
+      - description: Filter by song text
+        in: query
+        name: text
+        type: string
+      - description: Limit the number of results (default is 10)
+        in: query
+        name: limit
+        type: integer
+      - description: Offset the results for pagination (default is 0)
+        in: query
+        name: offset
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/TestEffectiveMobile_internal_models.Song'
+            type: array
+        "500":
+          description: Status Internal Server Error 500
+          schema:
+            type: string
+      summary: Get all songs
+      tags:
+      - songs
+    post:
+      consumes:
+      - application/json
+      description: Add a new song with external API enrichment
+      parameters:
+      - description: Add song
+        in: body
+        name: song
+        required: true
+        schema:
+          $ref: '#/definitions/internal_handlers.Song'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/TestEffectiveMobile_internal_models.Song'
+        "400":
+          description: Status Bad Request 400
+          schema:
+            type: string
+        "500":
+          description: Status Internal Server Error 500
+          schema:
+            type: string
+      summary: Add new song
+      tags:
+      - songs
+  /songs/{id}:
+    delete:
+      description: Delete song by ID
+      parameters:
+      - description: Song ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: Status Bad Request 400
+          schema:
+            type: string
+        "500":
+          description: Status Internal Server Error 500
+          schema:
+            type: string
+      summary: Delete song
+      tags:
+      - songs
+    get:
+      description: Get detailed information about a song by its ID
+      parameters:
+      - description: Pagination
+        in: query
+        name: page
+        required: true
+        type: integer
+      - description: Song ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/TestEffectiveMobile_internal_models.Song'
+        "400":
+          description: Status Bad Request 400
+          schema:
+            type: string
+        "500":
+          description: Status Internal Server Error 500
+          schema:
+            type: string
+      summary: Get song details
+      tags:
+      - songs
+    put:
+      consumes:
+      - application/json
+      description: Update song details by ID
+      parameters:
+      - description: Song ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Update song
+        in: body
+        name: song
+        required: true
+        schema:
+          $ref: '#/definitions/internal_handlers.Song'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/TestEffectiveMobile_internal_models.Song'
+        "400":
+          description: Status Bad Request 400
+          schema:
+            type: string
+        "500":
+          description: Status Internal Server Error 500
+          schema:
+            type: string
+      summary: Update song
+      tags:
+      - songs
+swagger: "2.0"
