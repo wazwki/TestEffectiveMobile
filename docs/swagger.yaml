@@ -4,8 +4,6 @@ definitions:
     properties:
       group:
         type: string
-      id:
-        type: integer
       link:
         type: string
       releaseDate:
@@ -15,19 +13,11 @@ definitions:
       text:
         type: string
     type: object
-  internal_handlers.Song:
+  TestEffectiveMobile_internal_models.SongPart:
     properties:
       group:
         type: string
-      id:
-        type: integer
-      link:
-        type: string
-      releaseDate:
-        type: string
       song:
-        type: string
-      text:
         type: string
     type: object
 host: localhost:8080
@@ -77,8 +67,6 @@ paths:
             type: array
         "500":
           description: Status Internal Server Error 500
-          schema:
-            type: string
       summary: Get all songs
       tags:
       - songs
@@ -92,22 +80,18 @@ paths:
         name: song
         required: true
         schema:
-          $ref: '#/definitions/internal_handlers.Song'
+          $ref: '#/definitions/TestEffectiveMobile_internal_models.SongPart'
       produces:
       - application/json
       responses:
         "201":
           description: Created
           schema:
-            $ref: '#/definitions/TestEffectiveMobile_internal_models.Song'
+            $ref: '#/definitions/TestEffectiveMobile_internal_models.SongPart'
         "400":
           description: Status Bad Request 400
-          schema:
-            type: string
         "500":
           description: Status Internal Server Error 500
-          schema:
-            type: string
       summary: Add new song
       tags:
       - songs
@@ -127,12 +111,6 @@ paths:
           description: No Content
         "400":
           description: Status Bad Request 400
-          schema:
-            type: string
-        "500":
-          description: Status Internal Server Error 500
-          schema:
-            type: string
       summary: Delete song
       tags:
       - songs
@@ -142,7 +120,6 @@ paths:
       - description: Pagination
         in: query
         name: page
-        required: true
         type: integer
       - description: Song ID
         in: path
@@ -158,12 +135,8 @@ paths:
             $ref: '#/definitions/TestEffectiveMobile_internal_models.Song'
         "400":
           description: Status Bad Request 400
-          schema:
-            type: string
         "500":
           description: Status Internal Server Error 500
-          schema:
-            type: string
       summary: Get song details
       tags:
       - songs
@@ -182,7 +155,7 @@ paths:
         name: song
         required: true
         schema:
-          $ref: '#/definitions/internal_handlers.Song'
+          $ref: '#/definitions/TestEffectiveMobile_internal_models.Song'
       produces:
       - application/json
       responses:
@@ -192,12 +165,8 @@ paths:
             $ref: '#/definitions/TestEffectiveMobile_internal_models.Song'
         "400":
           description: Status Bad Request 400
-          schema:
-            type: string
         "500":
           description: Status Internal Server Error 500
-          schema:
-            type: string
       summary: Update song
       tags:
       - songs

@@ -74,10 +74,7 @@ const docTemplate = `{
                         }
                     },
                     "500": {
-                        "description": "Status Internal Server Error 500",
-                        "schema": {
-                            "type": "string"
-                        }
+                        "description": "Status Internal Server Error 500"
                     }
                 }
             },
@@ -100,7 +97,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/internal_handlers.Song"
+                            "$ref": "#/definitions/TestEffectiveMobile_internal_models.SongPart"
                         }
                     }
                 ],
@@ -108,20 +105,14 @@ const docTemplate = `{
                     "201": {
                         "description": "Created",
                         "schema": {
-                            "$ref": "#/definitions/TestEffectiveMobile_internal_models.Song"
+                            "$ref": "#/definitions/TestEffectiveMobile_internal_models.SongPart"
                         }
                     },
                     "400": {
-                        "description": "Status Bad Request 400",
-                        "schema": {
-                            "type": "string"
-                        }
+                        "description": "Status Bad Request 400"
                     },
                     "500": {
-                        "description": "Status Internal Server Error 500",
-                        "schema": {
-                            "type": "string"
-                        }
+                        "description": "Status Internal Server Error 500"
                     }
                 }
             }
@@ -141,8 +132,7 @@ const docTemplate = `{
                         "type": "integer",
                         "description": "Pagination",
                         "name": "page",
-                        "in": "query",
-                        "required": true
+                        "in": "query"
                     },
                     {
                         "type": "integer",
@@ -160,16 +150,10 @@ const docTemplate = `{
                         }
                     },
                     "400": {
-                        "description": "Status Bad Request 400",
-                        "schema": {
-                            "type": "string"
-                        }
+                        "description": "Status Bad Request 400"
                     },
                     "500": {
-                        "description": "Status Internal Server Error 500",
-                        "schema": {
-                            "type": "string"
-                        }
+                        "description": "Status Internal Server Error 500"
                     }
                 }
             },
@@ -199,7 +183,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/internal_handlers.Song"
+                            "$ref": "#/definitions/TestEffectiveMobile_internal_models.Song"
                         }
                     }
                 ],
@@ -211,16 +195,10 @@ const docTemplate = `{
                         }
                     },
                     "400": {
-                        "description": "Status Bad Request 400",
-                        "schema": {
-                            "type": "string"
-                        }
+                        "description": "Status Bad Request 400"
                     },
                     "500": {
-                        "description": "Status Internal Server Error 500",
-                        "schema": {
-                            "type": "string"
-                        }
+                        "description": "Status Internal Server Error 500"
                     }
                 }
             },
@@ -247,16 +225,7 @@ const docTemplate = `{
                         "description": "No Content"
                     },
                     "400": {
-                        "description": "Status Bad Request 400",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    "500": {
-                        "description": "Status Internal Server Error 500",
-                        "schema": {
-                            "type": "string"
-                        }
+                        "description": "Status Bad Request 400"
                     }
                 }
             }
@@ -268,9 +237,6 @@ const docTemplate = `{
             "properties": {
                 "group": {
                     "type": "string"
-                },
-                "id": {
-                    "type": "integer"
                 },
                 "link": {
                     "type": "string"
@@ -286,25 +252,13 @@ const docTemplate = `{
                 }
             }
         },
-        "internal_handlers.Song": {
+        "TestEffectiveMobile_internal_models.SongPart": {
             "type": "object",
             "properties": {
                 "group": {
                     "type": "string"
                 },
-                "id": {
-                    "type": "integer"
-                },
-                "link": {
-                    "type": "string"
-                },
-                "releaseDate": {
-                    "type": "string"
-                },
                 "song": {
-                    "type": "string"
-                },
-                "text": {
                     "type": "string"
                 }
             }

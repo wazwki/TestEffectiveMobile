@@ -23,7 +23,7 @@ import (
 // @Param limit query int false "Limit the number of results (default is 10)"
 // @Param offset query int false "Offset the results for pagination (default is 0)"
 // @Success 200 {array}	models.Song
-// @Failure 500 {string} string "Status Internal Server Error 500"
+// @Failure 500 "Status Internal Server Error 500"
 // @Router /songs [get]
 func GetSongHandler(w http.ResponseWriter, r *http.Request) {
 	group := r.URL.Query().Get("group")
@@ -61,11 +61,11 @@ func GetSongHandler(w http.ResponseWriter, r *http.Request) {
 // @Description Get detailed information about a song by its ID
 // @Tags songs
 // @Produce json
-// @Param page query int true "Pagination"
+// @Param page query int false "Pagination"
 // @Param id path int true "Song ID"
 // @Success 200 {object} models.Song
-// @Failure 400 {string} string "Status Bad Request 400"
-// @Failure 500 {string} string "Status Internal Server Error 500"
+// @Failure 400 "Status Bad Request 400"
+// @Failure 500 "Status Internal Server Error 500"
 // @Router /songs/{id} [get]
 func GetDetailSongHandler(w http.ResponseWriter, r *http.Request) {
 	id := r.PathValue("id")
@@ -110,10 +110,10 @@ func GetDetailSongHandler(w http.ResponseWriter, r *http.Request) {
 // @Tags songs
 // @Accept json
 // @Produce json
-// @Param song body Song true "Add song"
-// @Success 201 {object} models.Song
-// @Failure 400 {string} string "Status Bad Request 400"
-// @Failure 500 {string} string "Status Internal Server Error 500"
+// @Param song body SongPart true "Add song"
+// @Success 201 {object} models.SongPart
+// @Failure 400 "Status Bad Request 400"
+// @Failure 500 "Status Internal Server Error 500"
 // @Router /songs [post]
 func PostSongHandler(w http.ResponseWriter, r *http.Request) {
 	var song models.Song
@@ -150,8 +150,8 @@ func PostSongHandler(w http.ResponseWriter, r *http.Request) {
 // @Param id path int true "Song ID"
 // @Param song body Song true "Update song"
 // @Success 200 {object} models.Song
-// @Failure 400 {string} string "Status Bad Request 400"
-// @Failure 500 {string} string "Status Internal Server Error 500"
+// @Failure 400 "Status Bad Request 400"
+// @Failure 500 "Status Internal Server Error 500"
 // @Router /songs/{id} [put]
 func UpdateSongHandler(w http.ResponseWriter, r *http.Request) {
 	id := r.PathValue("id")
@@ -166,7 +166,7 @@ func UpdateSongHandler(w http.ResponseWriter, r *http.Request) {
 	err := repository.UpdateSong(id, song)
 	if err != nil {
 		slog.Error(err.Error())
-		w.WriteHeader(http.StatusBadRequest)
+		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
 
@@ -180,8 +180,7 @@ func UpdateSongHandler(w http.ResponseWriter, r *http.Request) {
 // @Produce json
 // @Param id path int true "Song ID"
 // @Success 204
-// @Failure 400 {string} string "Status Bad Request 400"
-// @Failure 500 {string} string "Status Internal Server Error 500"
+// @Failure 400 "Status Bad Request 400"
 // @Router /songs/{id} [delete]
 func DeleteSongHandler(w http.ResponseWriter, r *http.Request) {
 	id := r.PathValue("id")
