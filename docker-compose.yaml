@@ -7,18 +7,22 @@ services:
       dockerfile: .dockerfile
     container_name: go_app
     environment:
-      - DB_HOST=${DB_HOST}
+      - DB_HOST=postgres
       - DB_PORT=${DB_PORT}
       - DB_USER=${DB_USER}
       - DB_PASSWORD=${DB_PASSWORD}
       - DB_NAME=${DB_NAME}
       - API_URL=${API_URL}
+      - API_PORT=${API_PORT}
       - HOST=${HOST}
       - PORT=${PORT}
+    networks:
+      - mynetwork
     depends_on:
       - postgres
     ports:
       - "${PORT}:${PORT}"
+      - "${API_PORT}:${API_PORT}"
 
   postgres:
     image: postgres:latest
@@ -27,6 +31,8 @@ services:
       POSTGRES_USER: ${DB_USER}
       POSTGRES_PASSWORD: ${DB_PASSWORD}
       POSTGRES_DB: ${DB_NAME}
+    networks:
+      - mynetwork
     ports:
       - "${DB_PORT}:${DB_PORT}"
     volumes:
@@ -34,3 +40,6 @@ services:
 
 volumes:
   pgdata:
+
+networks:
+  mynetwork:

@@ -16,8 +16,14 @@ RUN apk --no-cache add ca-certificates
 
 COPY --from=builder /app/main /app/main
 
-COPY .env /app/.env
+COPY .env /.env
+
+COPY /db/migrations /db/migrations 
+
+COPY /docs /docs
 
 EXPOSE ${PORT}
+
+EXPOSE ${API_PORT}
 
 CMD ["/app/main"]
